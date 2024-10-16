@@ -25,7 +25,7 @@ ui <- dashboardPage(
   dashboardSidebar(sidebarMenu(
     menuItem("Introduction", tabName = "intro", icon = icon("info-circle")),
     menuItem("Dataset Overview", tabName = "overview", icon = icon("database")),
-    menuItem("Membership Analysis", tabName = "Total_Spend", icon = icon("bar-chart")),
+    menuItem("Satisfaction Analysis", tabName = "satisfaction", icon = icon("bar-chart")),
     menuItem("Customer Segmentation", tabName = "Segmentation", icon = icon("users")), 
     menuItem("Discount Strategies", tabName = "Discount_applied_analysis", icon = icon("tags")),
     menuItem("City-based Insights", tabName = "City_insights", icon = icon("city")),
@@ -53,51 +53,44 @@ ui <- dashboardPage(
             img(src = "./Img3D.webp", width = "640"),
             dataTableOutput('userTable')
     ),
-    tabItem(tabName = "Total_Spend",
-            selectizeInput(inputId = "Membership", 
-                        label = "Membership_Type:",
-                        # choices = unique(data$Membership.Type),
-                        choices = c("Bronze", "Silver", "Gold"),
-                        selected = "Bronze",  # Use the first unique value as default
-                        multiple = TRUE #x
+    tabItem(tabName = "satisfaction",
+            selectInput(inputId = "Gender", 
+                        label = "Gender:",
+                        choices = unique(data$Gender),
+                        selected = unique(data$Gender)[1]  # Use the first unique value as default
             ),
-            plotOutput("membership_plot1"),
-            selectizeInput(inputId = "Gender", 
-                           label = "Gender:",
-                           choices = unique(data$Gender),
-                           selected = unique(data$Gender)[1],  # Use the first unique value as default
-                           multiple = TRUE #x
+            selectInput(inputId = "Membership", 
+                        label = "Membership Type:",
+                        choices = unique(data$Membership.Type),
+                        selected = unique(data$Membership.Type)[1]  # Use the first unique value as default
             ),
+            plotOutput("Gender_plot"),
             plotOutput("Membership_plot")
     ),
     tabItem(tabName = "Segmentation",
-            selectInput(inputId = "Total_spend",  # Changed ID to be unique
-                        label = "Gender:",
-                        choices = sort(unique(data$Gender )),
-                        selected = unique(data$Gender )[1],  # Use the first unique value as default
-                        multiple = TRUE
+            selectInput(inputId = "Age", 
+                        label = "Age:",
+                        choices = unique(data$Age),
+                        selected = unique(data$Age)[1]  # Use the first unique value as default
             ),
-            plotOutput("spend_plot"),
-            selectInput(inputId = "Items_purchased", 
-                        label = "City:",
-                        choices = sort(unique(data$City )),
-                        selected = unique(data$City )[1],
-                        multiple = TRUE
+            selectInput(inputId = "Last_purchased",  # Changed ID to be unique
+                        label = "Last_Purchased:",
+                        choices = unique(data$Days.Since.Last.Purchase  ),
+                        selected = unique(data$Days.Since.Last.Purchase )[1]  # Use the first unique value as default
             ),
-            plotOutput("Items_plot")
+            plotOutput("Age_plot"),
+            plotOutput("Last_plot")
     ),
     tabItem(tabName = "Discount_applied_analysis",
             selectInput(inputId = "Discount", 
-                        label = "Discount_applied:",
-                        choices = unique(data$Discount.Applied ),
-                        selected = unique(data$Discount.Applied)[1],  # Use the first unique value as default
-                        multiple = TRUE
+                        label = "Items Purchased:",
+                        choices = unique(data$Items.Purchased),
+                        selected = unique(data$Items.Purchased)[1]  # Use the first unique value as default
             ),
             selectInput(inputId = "item_discount", 
                         label = "Gender:",
                         choices = unique(data$Gender),
-                        selected = unique(data$Gender)[1],  # Use the first unique value as default
-                        multiple = TRUE
+                        selected = unique(data$Gender)[1]  # Use the first unique value as default
             ),
             plotOutput("Discount_plot"),
             plotOutput("Discount_plot2")
@@ -106,14 +99,12 @@ ui <- dashboardPage(
             selectInput(inputId = "Items.Purchased",
                         label = "City:",
                         choices = unique(data$City ),
-                        selected = unique(data$City)[1],  # Use the first unique value as default
-                        multiple = TRUE
+                        selected = unique(data$City)[1]  # Use the first unique value as default
             ),
             selectInput(inputId = "City",  # Changed ID to be unique
-                        label = "Membership:",
-                        choices = c("Bronze", "Silver", "Gold"),  # Specified order
-                        selected = "Bronze",  # Use the first value as default
-                        multiple = TRUE
+                        label = "Memeship:",
+                        choices = unique(data$Membership.Type ),
+                        selected = unique(data$Membership.Type)[1]  # Use the first unique value as default
             ),
             plotOutput("city_plot"),
             plotOutput("city_plot2")
